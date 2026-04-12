@@ -619,6 +619,179 @@ const VOCABULARY_DATA = {
           ]
         }
       ]
+    },
+    {
+      id: "unit4",
+      title: "Unit 4 \u2013 Sport Is Good for You!",
+      icon: "\u26BD",
+      subsections: [
+        {
+          id: "unit4-checkin",
+          title: "Check-in",
+          pages: [224],
+          entries: [
+            { english: "sport", german: "Sport", page: 224 },
+            { english: "sporty", german: "sportlich", page: 224 },
+            { english: "match", german: "Spiel, Wettkampf", page: 224 },
+            { english: "team", german: "Mannschaft, Team", page: 224 },
+            { english: "player", german: "Spieler/in", page: 224 },
+            { english: "fan", german: "Fan", page: 224 },
+            { english: "to cheer", german: "anfeuern, jubeln", page: 224 },
+            { english: "training", german: "Training", page: 224 },
+            { english: "to be/keep fit", german: "fit sein/bleiben", page: 224 },
+            { english: "healthy", german: "gesund", page: 224 },
+            { english: "gym", german: "Turnhalle, Fitnessstudio", page: 224 },
+            { english: "to practise", german: "\u00fcben, trainieren", page: 224 },
+            { english: "to beat", german: "schlagen, besiegen", page: 224 },
+            { english: "to score", german: "Punkte erzielen, ein Tor schie\u00dfen", page: 224 },
+            { english: "goal", german: "Tor, Ziel", page: 224 },
+            { english: "referee", german: "Schiedsrichter/in", page: 224 },
+            { english: "coach", german: "Trainer/in", page: 224 }
+          ]
+        },
+        {
+          id: "unit4-topic-a",
+          title: "A \u2013 Sports & Equipment",
+          pages: [225],
+          entries: [
+            { english: "racket", german: "Schl\u00e4ger (Tennis/Badminton)", page: 225 },
+            { english: "bat", german: "Schl\u00e4ger (Cricket/Baseball)", page: 225 },
+            { english: "court", german: "Spielfeld, Platz (Tennis)", page: 225 },
+            { english: "pitch", german: "Spielfeld (Fu\u00dfball)", page: 225 },
+            { english: "net", german: "Netz", page: 225 },
+            { english: "to throw", german: "werfen", page: 225 },
+            { english: "to catch", german: "fangen", page: 225 },
+            { english: "to kick", german: "treten, kicken", page: 225 },
+            { english: "cricket", german: "Cricket", page: 225 },
+            { english: "rugby", german: "Rugby", page: 225 },
+            { english: "athletics", german: "Leichtathletik", page: 225 }
+          ]
+        },
+        {
+          id: "unit4-topic-b",
+          title: "B \u2013 Fitness & Training",
+          pages: [226],
+          entries: [
+            { english: "to exercise", german: "trainieren, Sport treiben", page: 226 },
+            { english: "push-up", german: "Liegest\u00fctz", page: 226 },
+            { english: "sit-up", german: "Sit-up", page: 226 },
+            { english: "to warm up", german: "sich aufw\u00e4rmen", page: 226 },
+            { english: "to stretch", german: "dehnen, strecken", page: 226 },
+            { english: "muscle", german: "Muskel", page: 226 },
+            { english: "competition", german: "Wettbewerb", page: 226 },
+            { english: "tournament", german: "Turnier", page: 226 },
+            { english: "championship", german: "Meisterschaft", page: 226 }
+          ]
+        },
+        {
+          id: "unit4-station",
+          title: "Station 4",
+          pages: [227],
+          entries: [
+            { english: "record", german: "Rekord", page: 227 },
+            { english: "to break a record", german: "einen Rekord brechen", page: 227 },
+            { english: "medal", german: "Medaille", page: 227 },
+            { english: "trophy", german: "Pokal, Troph\u00e4e", page: 227 },
+            { english: "champion", german: "Meister/in, Champion", page: 227 }
+          ]
+        },
+        {
+          id: "unit4-story",
+          title: "Story \u2013 Don\u0027t Call Me Ugly!",
+          pages: [228],
+          entries: [
+            { english: "ugly", german: "h\u00e4sslich", page: 228 },
+            { english: "determined", german: "entschlossen", page: 228 },
+            { english: "challenge", german: "Herausforderung", page: 228 },
+            { english: "to believe (in)", german: "glauben (an)", page: 228 },
+            { english: "strength", german: "St\u00e4rke, Kraft", page: 228 },
+            { english: "weakness", german: "Schw\u00e4che", page: 228 },
+            { english: "proud", german: "stolz", page: 228 }
+          ]
+        },
+        {
+          id: "unit4-unittask",
+          title: "Unit Task \u2013 Sports Day",
+          pages: [228],
+          entries: [
+            { english: "sports day", german: "Sporttag", page: 228 },
+            { english: "to compete", german: "wettkampfen, teilnehmen", page: 228 },
+            { english: "to organize", german: "organisieren", page: 228 }
+          ]
+        },
+        {
+          id: "unit4-checkout",
+          title: "Check-out",
+          pages: [229],
+          entries: [
+            { english: "to improve", german: "verbessern", page: 229 },
+            { english: "to keep going", german: "weitermachen", page: 229 },
+            { english: "performance", german: "Leistung", page: 229 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "focus2",
+      title: "Focus 2 \u2013 Getting Around",
+      icon: "\uD83D\uDE8C",
+      subsections: [
+        {
+          id: "focus2-transport",
+          title: "Transportation",
+          pages: [230, 231, 232],
+          entries: [
+            { english: "bus", german: "Bus", page: 230 },
+            { english: "train", german: "Zug", page: 230 },
+            { english: "plane", german: "Flugzeug", page: 230 },
+            { english: "car", german: "Auto", page: 230 },
+            { english: "bike", german: "Fahrrad", page: 230 },
+            { english: "on foot", german: "zu Fu\u00df", page: 230 },
+            { english: "traffic", german: "Verkehr", page: 230 },
+            { english: "road", german: "Stra\u00dfe", page: 230 },
+            { english: "public transport", german: "\u00f6ffentliche Verkehrsmittel", page: 231 },
+            { english: "tram", german: "Stra\u00dfenbahn", page: 231 },
+            { english: "underground", german: "U-Bahn", page: 231 },
+            { english: "ferry", german: "F\u00e4hre", page: 231 },
+            { english: "timetable", german: "Fahrplan", page: 231 },
+            { english: "ticket", german: "Fahrkarte", page: 232 },
+            { english: "platform", german: "Bahnsteig", page: 232 },
+            { english: "single (ticket)", german: "einfache Fahrkarte", page: 232 },
+            { english: "return (ticket)", german: "R\u00fcckfahrkarte", page: 232 },
+            { english: "to get on", german: "einsteigen", page: 232 },
+            { english: "to get off", german: "aussteigen", page: 232 },
+            { english: "delay", german: "Versp\u00e4tung", page: 232 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "unit5",
+      title: "Unit 5 \u2013 Stay in Touch",
+      icon: "\uD83D\uDCF1",
+      subsections: [
+        {
+          id: "unit5-checkin",
+          title: "Check-in",
+          pages: [233],
+          entries: [
+            { english: "to stay in touch", german: "in Kontakt bleiben", page: 233 },
+            { english: "message", german: "Nachricht", page: 233 },
+            { english: "to phone", german: "anrufen, telefonieren", page: 233 },
+            { english: "mobile phone", german: "Handy, Mobiltelefon", page: 233 },
+            { english: "email", german: "E-Mail", page: 233 },
+            { english: "to send", german: "senden, schicken", page: 233 },
+            { english: "to receive", german: "empfangen, erhalten", page: 233 },
+            { english: "to reply", german: "antworten", page: 233 },
+            { english: "letter", german: "Brief", page: 233 },
+            { english: "stamp", german: "Briefmarke", page: 233 },
+            { english: "address", german: "Adresse", page: 233 },
+            { english: "postcard", german: "Postkarte", page: 233 },
+            { english: "parcel", german: "Paket", page: 233 },
+            { english: "video call", german: "Videoanruf", page: 233 }
+          ]
+        }
+      ]
     }
   ]
 };
