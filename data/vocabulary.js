@@ -439,6 +439,186 @@ const VOCABULARY_DATA = {
           ]
         }
       ]
+    },
+    {
+      id: "ac1",
+      title: "Across Cultures 1 \u2013 American Stories & Traditions",
+      icon: "\uD83E\uDDD1\u200D\uD83C\uDF3E",
+      subsections: [
+        {
+          id: "ac1-check-out",
+          title: "Check-out",
+          pages: [210],
+          entries: [
+            { english: "worth", german: "wert", page: 210 },
+            { english: "opinion", german: "Meinung", page: 210 },
+            { english: "summary", german: "Zusammenfassung", page: 210 }
+          ]
+        },
+        {
+          id: "ac1-stories",
+          title: "Stories & Traditions",
+          pages: [210, 211],
+          entries: [
+            { english: "pumpkin", german: "K\u00fcrbis", page: 210 },
+            { english: "pie", german: "Kuchen, Pastete", page: 210 },
+            { english: "feast", german: "Festmahl, Fest", page: 210 },
+            { english: "harvest", german: "Ernte", page: 210 },
+            { english: "thankful", german: "dankbar", page: 210 },
+            { english: "to celebrate", german: "feiern", page: 210 },
+            { english: "parade", german: "Umzug, Parade", page: 210 },
+            { english: "tale", german: "Erz\u00e4hlung, Geschichte", page: 211 },
+            { english: "tall tale", german: "L\u00fcgengeschichte", page: 211 },
+            { english: "hero", german: "Held", page: 211 },
+            { english: "brave", german: "mutig, tapfer", page: 211 },
+            { english: "lumberjack", german: "Holzf\u00e4ller", page: 211 },
+            { english: "ox (pl. oxen)", german: "Ochse(n)", page: 211 },
+            { english: "log cabin", german: "Blockh\u00fctte", page: 211 },
+            { english: "rodeo", german: "Rodeo", page: 211 },
+            { english: "cowboy", german: "Cowboy", page: 211 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "unit3",
+      title: "Unit 3 \u2013 Off to the Rockies!",
+      icon: "\uD83C\uDFD4\uFE0F",
+      subsections: [
+        {
+          id: "unit3-checkin",
+          title: "Check-in",
+          pages: [214],
+          entries: [
+            { english: "scenery", german: "Landschaft, Kulisse", page: 214 },
+            { english: "breathtaking", german: "atemberaubend", page: 214 },
+            { english: "at least", german: "mindestens, wenigstens", page: 214 },
+            { english: "rock", german: "Felsen, Stein", page: 214 },
+            { english: "cave", german: "H\u00f6hle", page: 214 },
+            { english: "national park", german: "Nationalpark", page: 214 },
+            { english: "bison", german: "Bison", page: 214 },
+            { english: "grizzly bear", german: "Grizzlyb\u00e4r", page: 214 },
+            { english: "rattlesnake", german: "Klapperschlange", page: 214 },
+            { english: "elk", german: "Wapiti", page: 214 },
+            { english: "distance", german: "Entfernung, Strecke", page: 214 },
+            { english: "nature", german: "Natur", page: 214 }
+          ]
+        },
+        {
+          id: "unit3-topic-a",
+          title: "A \u2013 Outdoor Activities",
+          pages: [215],
+          entries: [
+            { english: "to hike", german: "wandern", page: 215 },
+            { english: "hiking", german: "Wandern", page: 215 },
+            { english: "trail", german: "Wanderweg, Pfad", page: 215 },
+            { english: "to camp", german: "zelten, campen", page: 215 },
+            { english: "tent", german: "Zelt", page: 215 },
+            { english: "campfire", german: "Lagerfeuer", page: 215 },
+            { english: "sleeping bag", german: "Schlafsack", page: 215 },
+            { english: "backpack", german: "Rucksack", page: 215 },
+            { english: "campsite", german: "Campingplatz", page: 215 },
+            { english: "ranger", german: "Ranger, Aufseher", page: 215 },
+            { english: "compass", german: "Kompass", page: 215 }
+          ]
+        },
+        {
+          id: "unit3-topic-b",
+          title: "B \u2013 Nature & Environment",
+          pages: [216],
+          entries: [
+            { english: "to climb", german: "klettern", page: 216 },
+            { english: "steep", german: "steil", page: 216 },
+            { english: "summit", german: "Gipfel", page: 216 },
+            { english: "view", german: "Aussicht, Blick", page: 216 },
+            { english: "landscape", german: "Landschaft", page: 216 },
+            { english: "to protect", german: "sch\u00fctzen", page: 216 },
+            { english: "environment", german: "Umwelt", page: 216 },
+            { english: "endangered", german: "gef\u00e4hrdet, bedroht", page: 216 },
+            { english: "species", german: "Art, Spezies", page: 216 },
+            { english: "to survive", german: "\u00fcberleben", page: 216 }
+          ]
+        },
+        {
+          id: "unit3-story",
+          title: "Story \u2013 The Blackfoot and the Buffalo",
+          pages: [217],
+          entries: [
+            { english: "Blackfoot", german: "Schwarzfu\u00df (Indianerstamm)", page: 217 },
+            { english: "to hunt", german: "jagen", page: 217 },
+            { english: "arrow", german: "Pfeil", page: 217 },
+            { english: "bow", german: "Bogen", page: 217 },
+            { english: "chief", german: "H\u00e4uptling", page: 217 },
+            { english: "warrior", german: "Krieger", page: 217 },
+            { english: "plain", german: "Ebene, Pr\u00e4rie", page: 217 },
+            { english: "brave", german: "mutig, tapfer", page: 217 },
+            { english: "to rescue", german: "retten", page: 217 },
+            { english: "terrified", german: "ver\u00e4ngstigt, erschrocken", page: 217 }
+          ]
+        },
+        {
+          id: "unit3-station",
+          title: "Station 3 \u2013 First Nations",
+          pages: [218, 219],
+          entries: [
+            { english: "First Nations", german: "First Nations (Ureinwohner Kanadas)", page: 218 },
+            { english: "Inuit", german: "Inuit", page: 218 },
+            { english: "totem pole", german: "Totempfahl", page: 218 },
+            { english: "canoe", german: "Kanu", page: 218 },
+            { english: "igloo", german: "Iglu", page: 219 },
+            { english: "ethnic group", german: "ethnische Gruppe", page: 219 }
+          ]
+        },
+        {
+          id: "unit3-skills",
+          title: "Skills \u2013 How to Find Information on the Internet",
+          pages: [220],
+          entries: [
+            { english: "information", german: "Information", page: 220 },
+            { english: "search engine", german: "Suchmaschine", page: 220 },
+            { english: "website", german: "Webseite", page: 220 },
+            { english: "reliable", german: "zuverl\u00e4ssig, verl\u00e4sslich", page: 220 },
+            { english: "source", german: "Quelle", page: 220 },
+            { english: "result", german: "Ergebnis", page: 220 }
+          ]
+        },
+        {
+          id: "unit3-unittask",
+          title: "Unit Task \u2013 Our Travel Project",
+          pages: [220],
+          entries: [
+            { english: "destination", german: "Reiseziel", page: 220 },
+            { english: "accommodation", german: "Unterkunft, \u00dcbernachtung", page: 220 },
+            { english: "brochure", german: "Brosch\u00fcre, Prospekt", page: 220 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "ac2",
+      title: "Across Cultures 2 \u2013 Living Together",
+      icon: "\uD83E\uDD1D",
+      subsections: [
+        {
+          id: "ac2-australia",
+          title: "Australia & Aboriginal Culture",
+          pages: [222, 223],
+          entries: [
+            { english: "Aboriginal", german: "Aborigine, Ureinwohner Australiens", page: 222 },
+            { english: "multicultural", german: "multikulturell", page: 222 },
+            { english: "community", german: "Gemeinschaft", page: 222 },
+            { english: "ceremony", german: "Zeremonie", page: 222 },
+            { english: "sacred", german: "heilig", page: 222 },
+            { english: "respect", german: "Respekt", page: 222 },
+            { english: "proud", german: "stolz", page: 223 },
+            { english: "culture", german: "Kultur", page: 223 },
+            { english: "tradition", german: "Tradition", page: 223 },
+            { english: "boomerang", german: "Bumerang", page: 223 },
+            { english: "didgeridoo", german: "Didgeridoo", page: 223 },
+            { english: "outback", german: "Outback", page: 223 }
+          ]
+        }
+      ]
     }
   ]
 };
