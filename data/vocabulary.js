@@ -979,6 +979,78 @@ const VOCABULARY_DATA = {
           ]
         }
       ]
+    },
+    {
+      id: "ac3",
+      title: "Across Cultures 3 \u2013 British Stories and Legends",
+      icon: "\uD83D\uDC09",
+      subsections: [
+        {
+          id: "ac3-prepositions",
+          title: "Difficult Prepositions (at/in/on)",
+          pages: [240],
+          entries: [
+            { english: "at 6 o'clock", german: "um 6 Uhr", page: 240 },
+            { english: "at night", german: "in der Nacht", page: 240 },
+            { english: "at the weekend", german: "am Wochenende", page: 240 },
+            { english: "at school", german: "in der Schule", page: 240 },
+            { english: "at work", german: "bei der Arbeit", page: 240 },
+            { english: "at the doctor's", german: "beim Arzt", page: 240 },
+            { english: "at home", german: "zu Hause", page: 240 },
+            { english: "on Sunday", german: "am Sonntag, sonntags", page: 240 },
+            { english: "on 7th July", german: "am 7. Juli", page: 240 },
+            { english: "on the phone", german: "am Telefon", page: 240 },
+            { english: "on holiday", german: "im Urlaub", page: 240 },
+            { english: "on the road", german: "auf der Stra\u00dfe", page: 240 },
+            { english: "in the street", german: "auf der Stra\u00dfe, in der Stra\u00dfe", page: 240 },
+            { english: "in the world", german: "auf der Welt", page: 240 },
+            { english: "in the photo", german: "auf dem Foto", page: 240 },
+            { english: "in the afternoon", german: "am Nachmittag", page: 240 },
+            { english: "in 2015", german: "im Jahr 2015", page: 240 },
+            { english: "in April", german: "im April", page: 240 },
+            { english: "in the end", german: "am Ende", page: 240 }
+          ]
+        },
+        {
+          id: "ac3-vocab",
+          title: "Stories & Legends Vocabulary",
+          pages: [240],
+          entries: [
+            { english: "to turn to", german: "sich verwandeln in, sich hinwenden zu", page: 240 },
+            { english: "creative", german: "kreativ", page: 240 },
+            { english: "diary entry", german: "Tagebucheintrag", page: 240 },
+            { english: "sailboat", german: "Segelboot", page: 240 },
+            { english: "villain", german: "B\u00f6sewicht, Schurke", page: 240 },
+            { english: "magical", german: "magisch, Zauber-", page: 240 },
+            { english: "wizard", german: "Zauberer", page: 240 },
+            { english: "writer", german: "Autor/in, Schriftsteller/in, Verfasser/in", page: 240 },
+            { english: "completely", german: "komplett, v\u00f6llig", page: 240 },
+            { english: "ingredient", german: "Zutat", page: 240 }
+          ]
+        },
+        {
+          id: "ac3-legends",
+          title: "Crime & Legends",
+          pages: [241],
+          entries: [
+            { english: "knight", german: "Ritter", page: 241 },
+            { english: "criminal", german: "Kriminelle/r, Verbrecher/in", page: 241 },
+            { english: "power", german: "Kraft, Macht, St\u00e4rke", page: 241 },
+            { english: "private detective", german: "Privatdetektiv/in", page: 241 },
+            { english: "mysterious", german: "mysteri\u00f6s, geheimnisvoll", page: 241 },
+            { english: "crime", german: "Verbrechen, Kriminalit\u00e4t", page: 241 },
+            { english: "outlaw", german: "Gesetzlose/r, Geächtete/r", page: 241 },
+            { english: "robber", german: "R\u00e4uber/in", page: 241 },
+            { english: "the Round Table", german: "die Tafelrunde", page: 241 },
+            { english: "to hide", german: "sich verstecken", page: 241 },
+            { english: "the rich", german: "die Reichen", page: 241 },
+            { english: "the poor", german: "die Armen", page: 241 },
+            { english: "prop", german: "Requisite", page: 241 },
+            { english: "crime story", german: "Krimi, Kriminalgeschichte", page: 241 },
+            { english: "set", german: "Filmset, B\u00fchnenbild, Kulisse", page: 241 }
+          ]
+        }
+      ]
     }
   ]
 };
