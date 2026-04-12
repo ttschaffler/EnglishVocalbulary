@@ -4,7 +4,6 @@
   'use strict';
 
   // --- State ---
-  let selectedSections = new Set();
   let selectedSubsections = new Set();
   let filteredEntries = [];
   let quizQuestions = [];
@@ -24,8 +23,6 @@
   const screenResults = $('screen-results');
 
   const sectionSelector = $('section-selector');
-  const subsectionArea = $('subsection-area');
-  const subsectionChips = $('subsection-chips');
   const pageFilterArea = $('page-filter-area');
   const pageFrom = $('page-from');
   const pageTo = $('page-to');
@@ -60,26 +57,23 @@
   const btnRetry = $('btn-retry');
   const btnHome = $('btn-home');
 
-  // Encouraging messages for correct answers
+  // Encouraging messages
   const CORRECT_MESSAGES = [
     "Awesome!", "Nailed it!", "Perfect!", "You rock!",
     "Brilliant!", "Super!", "Fantastic!", "Well done!",
     "Great job!", "Amazing!", "Spot on!", "Yes!"
   ];
-
   const CLOSE_MESSAGES = [
     "Almost! Close enough for German spelling!",
     "Tiny typo, but we'll count it for German!",
     "Nearly perfect! Good enough!",
     "So close! That counts!"
   ];
-
   const WRONG_MESSAGES = [
     "Not quite!", "Oops!", "Keep trying!",
     "Don't worry, you'll get it next time!",
     "That's a tricky one!"
   ];
-
   const RESULT_TITLES = {
     perfect: ["PERFECT SCORE!", "You're a Vocab Master!", "Flawless Victory!"],
     great: ["Awesome job!", "Super impressive!", "Nearly perfect!"],
@@ -90,27 +84,103 @@
 
   // ===== INITIALIZATION =====
   function init() {
-    renderSections();
+    renderSectionTree();
     bindEvents();
+    updateVocabCount();
   }
 
-  function renderSections() {
+  // Render a full tree: every section header + every subsection as a checkbox row
+  function renderSectionTree() {
     sectionSelector.innerHTML = '';
+
     VOCABULARY_DATA.sections.forEach((section) => {
       const totalEntries = section.subsections.reduce((sum, sub) => sum + sub.entries.length, 0);
-      const card = document.createElement('div');
-      card.className = 'section-card';
-      card.dataset.sectionId = section.id;
-      card.innerHTML = `
-        <span class="section-icon">${section.icon}</span>
-        <div class="section-info">
-          <div class="section-name">${section.title}</div>
-          <div class="section-count">${totalEntries} words</div>
-        </div>
-        <div class="section-check"></div>
-      `;
-      card.addEventListener('click', () => toggleSection(section.id));
-      sectionSelector.appendChild(card);
+
+      // --- Section header (acts as select-all toggle) ---
+      const header = document.createElement('div');
+      header.className = 'section-header';
+      header.dataset.sectionId = section.id;
+      header.innerHTML =
+        '<span class="section-icon">' + section.icon + '</span>' +
+        '<div class="section-info">' +
+          '<div class="section-name">' + section.title + '</div>' +
+          '<div class="section-count">' + totalEntries + ' words total</div>' +
+        '</div>' +
+        '<button class="btn-select-all" data-section="' + section.id + '">Select all</button>';
+      sectionSelector.appendChild(header);
+
+      // Click the "Select all" button
+      header.querySelector('.btn-select-all').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleWholeSection(section);
+      });
+
+      // --- Subsection rows ---
+      const subList = document.createElement('div');
+      subList.className = 'subsection-list';
+
+      section.subsections.forEach((sub) => {
+        const row = document.createElement('label');
+        row.className = 'subsection-row';
+        row.innerHTML =
+          '<input type="checkbox" class="sub-checkbox" data-sub-id="' + sub.id + '">' +
+          '<span class="sub-name">' + sub.title + '</span>' +
+          '<span class="sub-count">' + sub.entries.length + ' words</span>' +
+          '<span class="sub-pages">p. ' + uniquePages(sub.entries).join('\u2013') + '</span>';
+
+        row.querySelector('input').addEventListener('change', (e) => {
+          if (e.target.checked) {
+            selectedSubsections.add(sub.id);
+          } else {
+            selectedSubsections.delete(sub.id);
+          }
+          syncSelectAllButtons();
+          updateVocabCount();
+        });
+
+        subList.appendChild(row);
+      });
+
+      sectionSelector.appendChild(subList);
+    });
+  }
+
+  function uniquePages(entries) {
+    const pages = [...new Set(entries.map((e) => e.page))].sort((a, b) => a - b);
+    if (pages.length <= 2) return pages;
+    return [pages[0], pages[pages.length - 1]];
+  }
+
+  function toggleWholeSection(section) {
+    const subIds = section.subsections.map((s) => s.id);
+    const allSelected = subIds.every((id) => selectedSubsections.has(id));
+
+    if (allSelected) {
+      subIds.forEach((id) => selectedSubsections.delete(id));
+    } else {
+      subIds.forEach((id) => selectedSubsections.add(id));
+    }
+
+    syncCheckboxes();
+    syncSelectAllButtons();
+    updateVocabCount();
+  }
+
+  function syncCheckboxes() {
+    document.querySelectorAll('.sub-checkbox').forEach((cb) => {
+      cb.checked = selectedSubsections.has(cb.dataset.subId);
+    });
+  }
+
+  function syncSelectAllButtons() {
+    VOCABULARY_DATA.sections.forEach((section) => {
+      const subIds = section.subsections.map((s) => s.id);
+      const allSelected = subIds.every((id) => selectedSubsections.has(id));
+      const btn = document.querySelector('.btn-select-all[data-section="' + section.id + '"]');
+      if (btn) {
+        btn.textContent = allSelected ? 'Deselect all' : 'Select all';
+        btn.classList.toggle('active', allSelected);
+      }
     });
   }
 
@@ -133,109 +203,24 @@
     });
   }
 
-  // ===== SECTION / SUBSECTION SELECTION =====
-  function toggleSection(sectionId) {
-    if (selectedSections.has(sectionId)) {
-      selectedSections.delete(sectionId);
-    } else {
-      selectedSections.add(sectionId);
-    }
-
-    // Update visual
-    document.querySelectorAll('.section-card').forEach((card) => {
-      if (selectedSections.has(card.dataset.sectionId)) {
-        card.classList.add('selected');
-        card.querySelector('.section-check').textContent = '\u2713';
-      } else {
-        card.classList.remove('selected');
-        card.querySelector('.section-check').textContent = '';
-      }
-    });
-
-    // Reset subsection selection
-    selectedSubsections.clear();
-    renderSubsections();
-    updateVocabCount();
-  }
-
-  function renderSubsections() {
-    if (selectedSections.size === 0) {
-      subsectionArea.classList.add('hidden');
-      pageFilterArea.classList.add('hidden');
-      return;
-    }
-
-    subsectionArea.classList.remove('hidden');
-    pageFilterArea.classList.remove('hidden');
-    subsectionChips.innerHTML = '';
-
-    // Select-all chip
-    const allChip = document.createElement('span');
-    allChip.className = 'chip selected';
-    allChip.textContent = 'All';
-    allChip.addEventListener('click', () => {
-      selectedSubsections.clear();
-      renderSubsections();
-      updateVocabCount();
-    });
-    subsectionChips.appendChild(allChip);
-
-    VOCABULARY_DATA.sections
-      .filter((s) => selectedSections.has(s.id))
-      .forEach((section) => {
-        section.subsections.forEach((sub) => {
-          const chip = document.createElement('span');
-          chip.className = 'chip' + (selectedSubsections.has(sub.id) ? ' selected' : '');
-          chip.innerHTML = `${sub.title} <span class="chip-count">(${sub.entries.length})</span>`;
-          chip.addEventListener('click', () => {
-            if (selectedSubsections.has(sub.id)) {
-              selectedSubsections.delete(sub.id);
-            } else {
-              selectedSubsections.add(sub.id);
-            }
-            renderSubsections();
-            updateVocabCount();
-          });
-          subsectionChips.appendChild(chip);
-        });
-      });
-
-    // Update "All" chip visual: unselected if specific subsections chosen
-    if (selectedSubsections.size > 0) {
-      allChip.classList.remove('selected');
-    }
-  }
-
+  // ===== PAGE FILTER =====
   function applyPageFilter() {
     const from = parseInt(pageFrom.value) || 0;
     const to = parseInt(pageTo.value) || 9999;
 
-    // Select all sections that have pages in range
-    selectedSections.clear();
     selectedSubsections.clear();
 
     VOCABULARY_DATA.sections.forEach((section) => {
       section.subsections.forEach((sub) => {
         const hasPages = sub.entries.some((e) => e.page >= from && e.page <= to);
         if (hasPages) {
-          selectedSections.add(section.id);
           selectedSubsections.add(sub.id);
         }
       });
     });
 
-    // Update visuals
-    document.querySelectorAll('.section-card').forEach((card) => {
-      if (selectedSections.has(card.dataset.sectionId)) {
-        card.classList.add('selected');
-        card.querySelector('.section-check').textContent = '\u2713';
-      } else {
-        card.classList.remove('selected');
-        card.querySelector('.section-check').textContent = '';
-      }
-    });
-
-    renderSubsections();
+    syncCheckboxes();
+    syncSelectAllButtons();
     updateVocabCount();
   }
 
@@ -245,19 +230,17 @@
     const to = parseInt(pageTo.value) || 9999;
     const hasPageFilter = pageFrom.value || pageTo.value;
 
-    VOCABULARY_DATA.sections
-      .filter((s) => selectedSections.has(s.id))
-      .forEach((section) => {
-        section.subsections
-          .filter((sub) => selectedSubsections.size === 0 || selectedSubsections.has(sub.id))
-          .forEach((sub) => {
-            sub.entries.forEach((entry) => {
-              if (!hasPageFilter || (entry.page >= from && entry.page <= to)) {
-                entries.push({ ...entry, sectionId: section.id, subsectionId: sub.id });
-              }
-            });
+    VOCABULARY_DATA.sections.forEach((section) => {
+      section.subsections
+        .filter((sub) => selectedSubsections.has(sub.id))
+        .forEach((sub) => {
+          sub.entries.forEach((entry) => {
+            if (!hasPageFilter || (entry.page >= from && entry.page <= to)) {
+              entries.push({ ...entry, sectionId: section.id, subsectionId: sub.id });
+            }
           });
-      });
+        });
+    });
 
     return entries;
   }
@@ -267,10 +250,10 @@
     const count = filteredEntries.length;
 
     if (count === 0) {
-      vocabCount.textContent = 'Select a section to start!';
+      vocabCount.textContent = 'Select topics above to start!';
       btnStart.disabled = true;
     } else {
-      vocabCount.textContent = `${count} words ready to practice`;
+      vocabCount.textContent = count + ' words ready to practice';
       btnStart.disabled = false;
     }
   }
@@ -281,21 +264,16 @@
     if (filteredEntries.length === 0) return;
 
     const mode = quizModeSelect.value;
-    let countStr = questionCountSelect.value;
-    let count = countStr === 'all' ? filteredEntries.length : parseInt(countStr);
+    var countStr = questionCountSelect.value;
+    var count = countStr === 'all' ? filteredEntries.length : parseInt(countStr);
     count = Math.min(count, filteredEntries.length);
 
-    // Shuffle entries
-    const shuffled = shuffleArray([...filteredEntries]);
-    const selected = shuffled.slice(0, count);
+    var shuffled = shuffleArray([...filteredEntries]);
+    var selected = shuffled.slice(0, count);
 
-    // Build questions
-    quizQuestions = selected.map((entry) => buildQuestion(entry, mode));
-
-    // Shuffle questions again
+    quizQuestions = selected.map(function (entry) { return buildQuestion(entry, mode); });
     quizQuestions = shuffleArray(quizQuestions);
 
-    // Reset state
     currentIndex = 0;
     correctCount = 0;
     wrongCount = 0;
@@ -309,14 +287,13 @@
   }
 
   function buildQuestion(entry, mode) {
-    // For verb-forms mode, only works with irregular verbs
     if (mode === 'verb-forms' && entry.simplePast) {
-      const formTypes = ['simple-past', 'past-participle'];
-      const formType = formTypes[Math.floor(Math.random() * formTypes.length)];
+      var formTypes = ['simple-past', 'past-participle'];
+      var formType = formTypes[Math.floor(Math.random() * formTypes.length)];
       return {
-        entry,
+        entry: entry,
         type: 'verb-form',
-        formType,
+        formType: formType,
         question: entry.english,
         correctAnswers: formType === 'simple-past'
           ? splitAlternatives(entry.simplePast)
@@ -326,23 +303,21 @@
       };
     }
 
-    // Determine direction
-    let direction;
+    var direction;
     if (mode === 'en-to-de') {
       direction = 'en-to-de';
     } else if (mode === 'de-to-en') {
       direction = 'de-to-en';
     } else {
-      // Mix: random direction, with some verb form questions mixed in
       if (entry.simplePast && Math.random() < 0.3) {
-        const formTypes = ['simple-past', 'past-participle'];
-        const formType = formTypes[Math.floor(Math.random() * formTypes.length)];
+        var formTypes2 = ['simple-past', 'past-participle'];
+        var ft = formTypes2[Math.floor(Math.random() * formTypes2.length)];
         return {
-          entry,
+          entry: entry,
           type: 'verb-form',
-          formType,
+          formType: ft,
           question: entry.english,
-          correctAnswers: formType === 'simple-past'
+          correctAnswers: ft === 'simple-past'
             ? splitAlternatives(entry.simplePast)
             : splitAlternatives(entry.pastParticiple),
           direction: 'verb-form',
@@ -354,7 +329,7 @@
 
     if (direction === 'en-to-de') {
       return {
-        entry,
+        entry: entry,
         type: 'translate',
         question: entry.english,
         correctAnswers: splitAlternatives(entry.german),
@@ -362,11 +337,10 @@
         isGermanAnswer: true
       };
     } else {
-      // Pick one of the German alternatives as the question
-      const germanAlts = splitAlternatives(entry.german);
-      const questionGerman = germanAlts[Math.floor(Math.random() * germanAlts.length)];
+      var germanAlts = splitAlternatives(entry.german);
+      var questionGerman = germanAlts[Math.floor(Math.random() * germanAlts.length)];
       return {
-        entry,
+        entry: entry,
         type: 'translate',
         question: questionGerman,
         correctAnswers: splitAlternatives(entry.english),
@@ -377,20 +351,17 @@
   }
 
   function showQuestion() {
-    const q = quizQuestions[currentIndex];
+    var q = quizQuestions[currentIndex];
     answered = false;
 
-    // Update progress
-    const pct = ((currentIndex) / quizQuestions.length) * 100;
+    var pct = ((currentIndex) / quizQuestions.length) * 100;
     progressBar.style.width = pct + '%';
-    progressText.textContent = `${currentIndex + 1} / ${quizQuestions.length}`;
+    progressText.textContent = (currentIndex + 1) + ' / ' + quizQuestions.length;
 
-    // Update stats
     correctCountEl.textContent = correctCount;
     streakCountEl.textContent = streak;
     wrongCountEl.textContent = wrongCount;
 
-    // Direction badge
     if (q.direction === 'en-to-de') {
       directionBadge.innerHTML = 'EN &rarr; DE';
       directionBadge.style.background = '#F5F3FF';
@@ -405,10 +376,8 @@
       directionBadge.style.color = '#E17055';
     }
 
-    // Question
     questionWord.textContent = q.question;
 
-    // Verb form hint
     if (q.type === 'verb-form') {
       verbFormHint.textContent = q.formType === 'simple-past'
         ? 'What is the simple past?'
@@ -417,7 +386,6 @@
       verbFormHint.textContent = '';
     }
 
-    // Reset input & feedback
     answerInput.value = '';
     answerInput.className = 'answer-input';
     answerInput.disabled = false;
@@ -431,8 +399,8 @@
   function checkAnswer() {
     if (answered) return;
 
-    const q = quizQuestions[currentIndex];
-    const userAnswer = answerInput.value.trim();
+    var q = quizQuestions[currentIndex];
+    var userAnswer = answerInput.value.trim();
 
     if (!userAnswer) {
       answerInput.focus();
@@ -444,7 +412,7 @@
     btnCheck.classList.add('hidden');
     btnNext.classList.remove('hidden');
 
-    const result = evaluateAnswer(userAnswer, q.correctAnswers, q.isGermanAnswer);
+    var result = evaluateAnswer(userAnswer, q.correctAnswers, q.isGermanAnswer);
 
     if (result === 'correct') {
       handleCorrect(q);
@@ -454,7 +422,6 @@
       handleWrong(q, userAnswer);
     }
 
-    // Update stats display
     correctCountEl.textContent = correctCount;
     streakCountEl.textContent = streak;
     wrongCountEl.textContent = wrongCount;
@@ -467,26 +434,21 @@
 
     answerInput.className = 'answer-input correct';
     quizCard.classList.add('bounce');
-    setTimeout(() => quizCard.classList.remove('bounce'), 300);
+    setTimeout(function () { quizCard.classList.remove('bounce'); }, 300);
 
-    const msg = randomItem(CORRECT_MESSAGES);
-    feedback.innerHTML = `<div class="feedback-correct">${msg}</div>`;
+    feedback.innerHTML = '<div class="feedback-correct">' + randomItem(CORRECT_MESSAGES) + '</div>';
   }
 
   function handleClose(q, userAnswer) {
-    // Close enough for German: count as correct
     correctCount++;
     streak++;
     bestStreak = Math.max(bestStreak, streak);
 
     answerInput.className = 'answer-input close';
 
-    const msg = randomItem(CLOSE_MESSAGES);
-    const correctStr = q.correctAnswers[0];
-    feedback.innerHTML = `
-      <div class="feedback-close">${msg}</div>
-      <div class="feedback-answer">Correct spelling: <strong>${correctStr}</strong></div>
-    `;
+    feedback.innerHTML =
+      '<div class="feedback-close">' + randomItem(CLOSE_MESSAGES) + '</div>' +
+      '<div class="feedback-answer">Correct spelling: <strong>' + q.correctAnswers[0] + '</strong></div>';
   }
 
   function handleWrong(q, userAnswer) {
@@ -495,20 +457,18 @@
 
     answerInput.className = 'answer-input wrong';
     quizCard.classList.add('shake');
-    setTimeout(() => quizCard.classList.remove('shake'), 400);
+    setTimeout(function () { quizCard.classList.remove('shake'); }, 400);
 
-    const msg = randomItem(WRONG_MESSAGES);
-    const correctStr = q.correctAnswers.join(' / ');
-    feedback.innerHTML = `
-      <div class="feedback-wrong">${msg}</div>
-      <div class="feedback-answer">Correct answer: <strong>${correctStr}</strong></div>
-    `;
+    var correctStr = q.correctAnswers.join(' / ');
+    feedback.innerHTML =
+      '<div class="feedback-wrong">' + randomItem(WRONG_MESSAGES) + '</div>' +
+      '<div class="feedback-answer">Correct answer: <strong>' + correctStr + '</strong></div>';
 
     mistakes.push({
       question: q.question,
       direction: q.direction,
       formType: q.formType || null,
-      userAnswer,
+      userAnswer: userAnswer,
       correctAnswer: correctStr
     });
   }
@@ -524,34 +484,29 @@
 
   // ===== ANSWER EVALUATION =====
   function evaluateAnswer(userAnswer, correctAnswers, isGermanAnswer) {
-    const normalizedUser = normalize(userAnswer);
+    var normalizedUser = normalize(userAnswer);
 
-    for (const correct of correctAnswers) {
-      const normalizedCorrect = normalize(correct);
-
-      // Exact match
-      if (normalizedUser === normalizedCorrect) return 'correct';
+    for (var i = 0; i < correctAnswers.length; i++) {
+      if (normalizedUser === normalize(correctAnswers[i])) return 'correct';
     }
 
-    // For German answers: allow 1 character difference (Levenshtein distance <= 1)
+    // German: allow 1-char Levenshtein distance
     if (isGermanAnswer) {
-      for (const correct of correctAnswers) {
-        const normalizedCorrect = normalize(correct);
-        const dist = levenshteinDistance(normalizedUser, normalizedCorrect);
+      for (var j = 0; j < correctAnswers.length; j++) {
+        var dist = levenshteinDistance(normalizedUser, normalize(correctAnswers[j]));
         if (dist <= 1 && normalizedUser.length >= 2) return 'close';
       }
     }
 
-    // For English answers: still allow exact match only (stricter)
-    // But allow common ue->ü, ae->ä, oe->ö, ss->ß in German input
+    // Umlaut expansion: ue->ü, ae->ä, oe->ö, ss->ß
     if (isGermanAnswer) {
-      const expandedUser = expandUmlauts(normalizedUser);
-      for (const correct of correctAnswers) {
-        const normalizedCorrect = normalize(correct);
-        if (expandedUser === normalizedCorrect) return 'correct';
-        const expandedCorrect = expandUmlauts(normalizedCorrect);
-        if (normalizedUser === expandedCorrect) return 'correct';
-        if (expandedUser === expandedCorrect) return 'correct';
+      var expandedUser = expandUmlauts(normalizedUser);
+      for (var k = 0; k < correctAnswers.length; k++) {
+        var nc = normalize(correctAnswers[k]);
+        if (expandedUser === nc) return 'correct';
+        var ec = expandUmlauts(nc);
+        if (normalizedUser === ec) return 'correct';
+        if (expandedUser === ec) return 'correct';
       }
     }
 
@@ -559,68 +514,55 @@
   }
 
   function normalize(str) {
-    return str
-      .toLowerCase()
-      .replace(/\s+/g, ' ')
-      .replace(/[()]/g, '')
-      .trim();
+    return str.toLowerCase().replace(/\s+/g, ' ').replace(/[()]/g, '').trim();
   }
 
   function expandUmlauts(str) {
-    return str
-      .replace(/ä/g, 'ae')
-      .replace(/ö/g, 'oe')
-      .replace(/ü/g, 'ue')
-      .replace(/ß/g, 'ss');
+    return str.replace(/\u00e4/g, 'ae').replace(/\u00f6/g, 'oe')
+              .replace(/\u00fc/g, 'ue').replace(/\u00df/g, 'ss');
   }
 
   function splitAlternatives(str) {
-    // Split on commas, but not within parentheses
-    // "zerbrechen, kaputt machen" -> ["zerbrechen", "kaputt machen"]
-    // "burnt/burned" -> ["burnt", "burned", "burnt/burned"]
-    const results = [];
+    var results = [];
+    var commaParts = str.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
 
-    // First split by comma
-    const commaParts = str.split(',').map((s) => s.trim()).filter(Boolean);
-
-    commaParts.forEach((part) => {
+    commaParts.forEach(function (part) {
       results.push(part);
-      // Also split by "/" for alternative forms
-      if (part.includes('/')) {
-        part.split('/').forEach((sub) => {
-          const trimmed = sub.trim();
+      if (part.indexOf('/') !== -1) {
+        part.split('/').forEach(function (sub) {
+          var trimmed = sub.trim();
           if (trimmed) results.push(trimmed);
         });
       }
     });
 
-    return [...new Set(results)];
+    // Deduplicate
+    var seen = {};
+    return results.filter(function (item) {
+      if (seen[item]) return false;
+      seen[item] = true;
+      return true;
+    });
   }
 
   function levenshteinDistance(a, b) {
-    const matrix = [];
+    var matrix = [];
+    for (var i = 0; i <= b.length; i++) matrix[i] = [i];
+    for (var j = 0; j <= a.length; j++) matrix[0][j] = j;
 
-    for (let i = 0; i <= b.length; i++) {
-      matrix[i] = [i];
-    }
-    for (let j = 0; j <= a.length; j++) {
-      matrix[0][j] = j;
-    }
-
-    for (let i = 1; i <= b.length; i++) {
-      for (let j = 1; j <= a.length; j++) {
-        if (b.charAt(i - 1) === a.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
+    for (var i2 = 1; i2 <= b.length; i2++) {
+      for (var j2 = 1; j2 <= a.length; j2++) {
+        if (b.charAt(i2 - 1) === a.charAt(j2 - 1)) {
+          matrix[i2][j2] = matrix[i2 - 1][j2 - 1];
         } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1, // substitution
-            matrix[i][j - 1] + 1,     // insertion
-            matrix[i - 1][j] + 1      // deletion
+          matrix[i2][j2] = Math.min(
+            matrix[i2 - 1][j2 - 1] + 1,
+            matrix[i2][j2 - 1] + 1,
+            matrix[i2 - 1][j2] + 1
           );
         }
       }
     }
-
     return matrix[b.length][a.length];
   }
 
@@ -628,11 +570,10 @@
   function showResults() {
     showScreen('results');
 
-    const total = quizQuestions.length;
-    const pct = Math.round((correctCount / total) * 100);
+    var total = quizQuestions.length;
+    var pct = Math.round((correctCount / total) * 100);
 
-    // Title
-    let titlePool;
+    var titlePool;
     if (pct === 100) titlePool = RESULT_TITLES.perfect;
     else if (pct >= 80) titlePool = RESULT_TITLES.great;
     else if (pct >= 60) titlePool = RESULT_TITLES.good;
@@ -640,34 +581,30 @@
     else titlePool = RESULT_TITLES.low;
     resultsTitle.textContent = randomItem(titlePool);
 
-    // Stars (out of 5)
-    const starCount = Math.ceil(pct / 20);
+    var starCount = Math.ceil(pct / 20);
     resultsStars.textContent = '\u2B50'.repeat(starCount) + '\u2606'.repeat(5 - starCount);
 
-    // Animate score
     animateNumber(scoreNumber, 0, pct, 800);
 
     resultsCorrect.textContent = correctCount + ' / ' + total;
     resultsWrong.textContent = wrongCount + ' / ' + total;
     resultsStreak.textContent = bestStreak;
 
-    // Mistakes
     if (mistakes.length > 0) {
       mistakesSection.classList.remove('hidden');
       mistakesList.innerHTML = '';
-      mistakes.forEach((m) => {
-        const dir = m.direction === 'en-to-de' ? 'EN\u2192DE'
+      mistakes.forEach(function (m) {
+        var dir = m.direction === 'en-to-de' ? 'EN\u2192DE'
           : m.direction === 'de-to-en' ? 'DE\u2192EN' : 'Verb Form';
-        const formInfo = m.formType
-          ? ` (${m.formType === 'simple-past' ? 'Simple Past' : 'Past Participle'})`
+        var formInfo = m.formType
+          ? ' (' + (m.formType === 'simple-past' ? 'Simple Past' : 'Past Participle') + ')'
           : '';
-        const item = document.createElement('div');
+        var item = document.createElement('div');
         item.className = 'mistake-item';
-        item.innerHTML = `
-          <div class="mistake-question">${dir}${formInfo}: ${m.question}</div>
-          <div class="mistake-your-answer">Your answer: ${m.userAnswer}</div>
-          <div class="mistake-correct-answer">Correct: ${m.correctAnswer}</div>
-        `;
+        item.innerHTML =
+          '<div class="mistake-question">' + dir + formInfo + ': ' + m.question + '</div>' +
+          '<div class="mistake-your-answer">Your answer: ' + m.userAnswer + '</div>' +
+          '<div class="mistake-correct-answer">Correct: ' + m.correctAnswer + '</div>';
         mistakesList.appendChild(item);
       });
     } else {
@@ -676,7 +613,6 @@
   }
 
   function retryQuiz() {
-    // Retry with same settings, just reshuffle
     currentIndex = 0;
     correctCount = 0;
     wrongCount = 0;
@@ -707,10 +643,10 @@
   }
 
   function shuffleArray(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
     }
     return a;
   }
@@ -720,11 +656,11 @@
   }
 
   function animateNumber(el, from, to, duration) {
-    const start = performance.now();
+    var start = performance.now();
     function step(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const value = Math.round(from + (to - from) * easeOut(progress));
+      var elapsed = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var value = Math.round(from + (to - from) * easeOut(progress));
       el.textContent = value;
       if (progress < 1) requestAnimationFrame(step);
     }
