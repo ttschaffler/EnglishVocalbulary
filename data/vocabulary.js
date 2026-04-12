@@ -247,6 +247,198 @@ const VOCABULARY_DATA = {
           ]
         }
       ]
+    },
+    {
+      id: "unit2",
+      title: "Unit 2 \u2013 The Sunshine State",
+      icon: "\u2600\uFE0F",
+      subsections: [
+        {
+          id: "unit2-checkin",
+          title: "Check-in",
+          pages: [203],
+          entries: [
+            { english: "sunshine", german: "Sonnenschein", page: 203 },
+            { english: "state", german: "Staat, Bundesstaat", page: 203 },
+            { english: "beach", german: "Strand", page: 203 },
+            { english: "palm tree", german: "Palme", page: 203 },
+            { english: "theme park", german: "Freizeitpark, Themenpark", page: 203 },
+            { english: "alligator", german: "Alligator", page: 203 },
+            { english: "dolphin", german: "Delfin", page: 203 },
+            { english: "manatee", german: "Seekuh, Manati", page: 203 },
+            { english: "swamp", german: "Sumpf", page: 203 },
+            { english: "ocean", german: "Ozean, Meer", page: 203 },
+            { english: "surfing", german: "Surfen", page: 203 },
+            { english: "kayaking", german: "Kajakfahren", page: 203 }
+          ]
+        },
+        {
+          id: "unit2-topic-a",
+          title: "A \u2013 Travel & Airport",
+          pages: [204],
+          entries: [
+            { english: "airport", german: "Flughafen", page: 204 },
+            { english: "flight", german: "Flug", page: 204 },
+            { english: "passenger", german: "Passagier, Fluggast", page: 204 },
+            { english: "suitcase", german: "Koffer", page: 204 },
+            { english: "to pack", german: "packen", page: 204 },
+            { english: "boarding pass", german: "Bordkarte", page: 204 },
+            { english: "gate", german: "Gate, Flugsteig", page: 204 },
+            { english: "to take off", german: "abheben, starten", page: 204 },
+            { english: "to land", german: "landen", page: 204 },
+            { english: "luggage", german: "Gep\u00e4ck", page: 204 },
+            { english: "postcard", german: "Postkarte", page: 204 },
+            { english: "holiday", german: "Urlaub, Ferien", page: 204 },
+            { english: "trip", german: "Reise, Ausflug", page: 204 },
+            { english: "to save (up)", german: "sparen", page: 204 },
+            { english: "pocket money", german: "Taschengeld", page: 204 },
+            { english: "already", german: "schon, bereits", page: 204 },
+            { english: "excitement", german: "Aufregung, Begeisterung", page: 204 }
+          ]
+        },
+        {
+          id: "unit2-topic-b",
+          title: "B \u2013 History & Exploration",
+          pages: [205, 206, 207, 208],
+          entries: [
+            { english: "settler", german: "Siedler", page: 205 },
+            { english: "explorer", german: "Entdecker, Forscher", page: 205 },
+            { english: "to conquer", german: "erobern", page: 205 },
+            { english: "colony", german: "Kolonie", page: 205 },
+            { english: "century", german: "Jahrhundert", page: 205 },
+            { english: "population", german: "Bev\u00f6lkerung", page: 205 },
+            { english: "Native American", german: "Ureinwohner Amerikas", page: 205 },
+            { english: "to arrive", german: "ankommen", page: 206 },
+            { english: "journey", german: "Reise", page: 206 },
+            { english: "dangerous", german: "gef\u00e4hrlich", page: 206 },
+            { english: "gold", german: "Gold", page: 206 },
+            { english: "silver", german: "Silber", page: 206 },
+            { english: "map", german: "Karte, Landkarte", page: 206 },
+            { english: "sailor", german: "Seemann, Matrose", page: 206 },
+            { english: "port", german: "Hafen", page: 206 },
+            { english: "route", german: "Route, Weg", page: 206 },
+            { english: "to trade", german: "handeln", page: 206 },
+            { english: "to exist", german: "existieren, bestehen", page: 208 },
+            { english: "to cook", german: "kochen", page: 208 },
+            { english: "class (pl. classes)", german: "Klasse(n)", page: 208 },
+            { english: "history", german: "Geschichte", page: 208 },
+            { english: "family", german: "Familie", page: 208 }
+          ]
+        },
+        {
+          id: "unit2-skills",
+          title: "Skills \u2013 How to Give a Good Presentation",
+          pages: [208],
+          entries: [
+            { english: "audience", german: "Publikum, Zuh\u00f6rer", page: 208 },
+            { english: "note", german: "Notiz", page: 208 },
+            { english: "eye contact", german: "Blickkontakt", page: 208 },
+            { english: "step", german: "Schritt", page: 208 },
+            { english: "to keep", german: "behalten, aufbewahren", page: 208 },
+            { english: "to sound", german: "klingen", page: 208 },
+            { english: "personal", german: "pers\u00f6nlich", page: 208 },
+            { english: "on time", german: "p\u00fcnktlich", page: 208 },
+            { english: "to take a look at", german: "sich ansehen", page: 208 },
+            { english: "to be connected (with)", german: "verbunden sein (mit)", page: 208 },
+            { english: "point", german: "Punkt", page: 208 },
+            { english: "to communicate", german: "kommunizieren", page: 208 },
+            { english: "fantastic", german: "fantastisch, gro\u00dfartig", page: 208 },
+            { english: "present", german: "Geschenk", page: 208 }
+          ]
+        },
+        {
+          id: "unit2-story",
+          title: "Story \u2013 A Perfect Day for Treasure Hunting",
+          pages: [209],
+          entries: [
+            { english: "treasure", german: "Schatz", page: 209 },
+            { english: "hunting", german: "Jagen, Jagd", page: 209 },
+            { english: "Europe", german: "Europa", page: 209 },
+            { english: "American", german: "amerikanisch", page: 209 },
+            { english: "to discover", german: "entdecken", page: 209 },
+            { english: "historical", german: "historisch", page: 209 },
+            { english: "to belong (to)", german: "geh\u00f6ren (zu)", page: 209 },
+            { english: "object", german: "Gegenstand, Objekt", page: 209 },
+            { english: "heavy", german: "schwer", page: 209 },
+            { english: "museum", german: "Museum", page: 209 },
+            { english: "to sail", german: "segeln", page: 209 },
+            { english: "metal", german: "Metall", page: 209 },
+            { english: "detector", german: "Detektor", page: 209 },
+            { english: "slowly", german: "langsam", page: 209 },
+            { english: "to dig", german: "graben", page: 209 },
+            { english: "cloud", german: "Wolke", page: 209 },
+            { english: "usual", german: "\u00fcblich, gew\u00f6hnlich", page: 209 },
+            { english: "usually", german: "gew\u00f6hnlich, normalerweise", page: 209 },
+            { english: "season", german: "Jahreszeit, Saison", page: 209 },
+            { english: "shovel", german: "Schaufel", page: 209 },
+            { english: "carefully", german: "vorsichtig, sorgf\u00e4ltig", page: 209 },
+            { english: "meal", german: "Mahlzeit, Essen", page: 209 }
+          ]
+        },
+        {
+          id: "unit2-unittask",
+          title: "Unit Task \u2013 Join Our Club!",
+          pages: [209],
+          entries: [
+            { english: "talk", german: "Vortrag", page: 209 },
+            { english: "foreign language", german: "Fremdsprache", page: 209 },
+            { english: "jogging", german: "Joggen", page: 209 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "focus1",
+      title: "Focus 1 \u2013 Regions of the US",
+      icon: "\uD83C\uDDFA\uD83C\uDDF8",
+      subsections: [
+        {
+          id: "focus1-history",
+          title: "US History & Settlers",
+          pages: [210, 211],
+          entries: [
+            { english: "region", german: "Region, Gebiet", page: 210 },
+            { english: "Pilgrim", german: "Pilger", page: 210 },
+            { english: "the Mayflower", german: "die Mayflower", page: 210 },
+            { english: "to settle", german: "sich niederlassen, besiedeln", page: 210 },
+            { english: "settlement", german: "Siedlung", page: 210 },
+            { english: "shore", german: "Ufer, K\u00fcste", page: 210 },
+            { english: "Thanksgiving", german: "Erntedankfest", page: 210 },
+            { english: "corn", german: "Mais", page: 210 },
+            { english: "turkey", german: "Truthahn", page: 210 },
+            { english: "cotton", german: "Baumwolle", page: 211 },
+            { english: "plantation", german: "Plantage", page: 211 },
+            { english: "slave", german: "Sklave", page: 211 },
+            { english: "slavery", german: "Sklaverei", page: 211 },
+            { english: "civil war", german: "B\u00fcrgerkrieg", page: 211 },
+            { english: "prairie", german: "Pr\u00e4rie", page: 211 },
+            { english: "wheat", german: "Weizen", page: 211 },
+            { english: "cattle", german: "Rinder, Vieh", page: 211 },
+            { english: "Gold Rush", german: "Goldrausch", page: 211 },
+            { english: "Native American", german: "Ureinwohner Amerikas", page: 211 },
+            { english: "tribe", german: "Stamm", page: 211 },
+            { english: "reservation", german: "Reservat", page: 211 },
+            { english: "buffalo", german: "B\u00fcffel", page: 211 }
+          ]
+        },
+        {
+          id: "focus1-geography",
+          title: "US Geography & Culture",
+          pages: [212, 213],
+          entries: [
+            { english: "coast", german: "K\u00fcste", page: 212 },
+            { english: "mountain", german: "Berg, Gebirge", page: 212 },
+            { english: "desert", german: "W\u00fcste", page: 212 },
+            { english: "national park", german: "Nationalpark", page: 212 },
+            { english: "island", german: "Insel", page: 212 },
+            { english: "climate", german: "Klima", page: 212 },
+            { english: "flag", german: "Flagge, Fahne", page: 213 },
+            { english: "Independence Day", german: "Unabh\u00e4ngigkeitstag", page: 213 },
+            { english: "fireworks", german: "Feuerwerk", page: 213 },
+            { english: "president", german: "Pr\u00e4sident", page: 213 }
+          ]
+        }
+      ]
     }
   ]
 };
