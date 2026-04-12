@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocab Champion - English &amp; German Trainer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ===== START SCREEN ===== -->
+  <div id="screen-start" class="screen active">
+    <div class="hero">
+      <h1 class="app-title">Vocab Champion</h1>
+      <p class="app-subtitle">Master your English &amp; German vocabulary!</p>
+    </div>
+
+    <div class="selection-panel">
+      <h2>Choose what to practice</h2>
+
+      <!-- Section Selection -->
+      <div class="section-selector" id="section-selector">
+        <!-- Filled by JS -->
+      </div>
+
+      <!-- Subsection Selection -->
+      <div id="subsection-area" class="subsection-area hidden">
+        <h3>Pick topics</h3>
+        <div class="subsection-chips" id="subsection-chips">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- Page Range Filter -->
+      <div id="page-filter-area" class="page-filter-area hidden">
+        <h3>Or filter by pages</h3>
+        <div class="page-range">
+          <label>From page
+            <input type="number" id="page-from" min="1" max="999" placeholder="e.g. 195">
+          </label>
+          <label>To page
+            <input type="number" id="page-to" min="1" max="999" placeholder="e.g. 296">
+          </label>
+          <button class="btn btn-small" id="btn-apply-pages">Apply</button>
+        </div>
+      </div>
+
+      <!-- Quiz Options -->
+      <div class="quiz-options">
+        <h3>Quiz settings</h3>
+        <div class="option-row">
+          <label for="question-count">Number of questions:</label>
+          <select id="question-count">
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+        <div class="option-row">
+          <label for="quiz-mode">Quiz mode:</label>
+          <select id="quiz-mode">
+            <option value="mix" selected>Mix (both directions)</option>
+            <option value="en-to-de">English &rarr; German</option>
+            <option value="de-to-en">German &rarr; English</option>
+            <option value="verb-forms">Verb forms (irregular verbs only)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Vocab count display -->
+      <div class="vocab-count" id="vocab-count">
+        Select a section to start!
+      </div>
+
+      <button class="btn btn-start" id="btn-start" disabled>
+        Start Training!
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ SCREEN ===== -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-header">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+        <span class="progress-text" id="progress-text">1 / 10</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat correct-stat">
+          <span class="stat-icon">&#x2705;</span>
+          <span id="correct-count">0</span>
+        </div>
+        <div class="stat streak-stat">
+          <span class="stat-icon">&#x1F525;</span>
+          <span id="streak-count">0</span>
+        </div>
+        <div class="stat wrong-stat">
+          <span class="stat-icon">&#x274C;</span>
+          <span id="wrong-count">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-card" id="quiz-card">
+      <div class="direction-badge" id="direction-badge">EN &rarr; DE</div>
+      <div class="question-word" id="question-word">hello</div>
+      <div class="verb-form-hint" id="verb-form-hint"></div>
+
+      <div class="answer-area">
+        <input type="text" id="answer-input" class="answer-input"
+               placeholder="Type your answer..." autocomplete="off" spellcheck="false">
+        <button class="btn btn-check" id="btn-check">Check</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+      <button class="btn btn-next hidden" id="btn-next">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== RESULTS SCREEN ===== -->
+  <div id="screen-results" class="screen">
+    <div class="results-card">
+      <h2 class="results-title" id="results-title">Great job!</h2>
+      <div class="results-stars" id="results-stars"></div>
+      <div class="results-score">
+        <div class="score-circle" id="score-circle">
+          <span class="score-number" id="score-number">0</span>
+          <span class="score-label">%</span>
+        </div>
+      </div>
+      <div class="results-details">
+        <div class="detail-item">
+          <span>&#x2705; Correct</span>
+          <span id="results-correct">0</span>
+        </div>
+        <div class="detail-item">
+          <span>&#x274C; Wrong</span>
+          <span id="results-wrong">0</span>
+        </div>
+        <div class="detail-item">
+          <span>&#x1F525; Best streak</span>
+          <span id="results-streak">0</span>
+        </div>
+      </div>
+
+      <!-- Mistakes review -->
+      <div class="mistakes-section hidden" id="mistakes-section">
+        <h3>Review your mistakes</h3>
+        <div class="mistakes-list" id="mistakes-list"></div>
+      </div>
+
+      <div class="results-actions">
+        <button class="btn btn-retry" id="btn-retry">Try Again</button>
+        <button class="btn btn-home" id="btn-home">Choose New Words</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/vocabulary.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
