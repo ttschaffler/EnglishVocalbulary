@@ -790,6 +790,193 @@ const VOCABULARY_DATA = {
             { english: "parcel", german: "Paket", page: 233 },
             { english: "video call", german: "Videoanruf", page: 233 }
           ]
+        },
+        {
+          id: "unit5-topic-a",
+          title: "A \u2013 Online Communication",
+          pages: [234],
+          entries: [
+            { english: "to sign up", german: "sich anmelden", page: 234 },
+            { english: "password", german: "Passwort", page: 234 },
+            { english: "account", german: "Konto, Account", page: 234 },
+            { english: "to log in", german: "sich einloggen", page: 234 },
+            { english: "to log out", german: "sich ausloggen", page: 234 },
+            { english: "to upload", german: "hochladen", page: 234 },
+            { english: "to download", german: "herunterladen", page: 234 },
+            { english: "to attach", german: "anh\u00e4ngen", page: 234 },
+            { english: "attachment", german: "Anhang", page: 234 },
+            { english: "subject", german: "Betreff", page: 234 },
+            { english: "to forward", german: "weiterleiten", page: 234 }
+          ]
+        },
+        {
+          id: "unit5-topic-b",
+          title: "B \u2013 Social Media & Safety",
+          pages: [235],
+          entries: [
+            { english: "social network", german: "soziales Netzwerk", page: 235 },
+            { english: "to comment", german: "kommentieren", page: 235 },
+            { english: "to like", german: "liken, gef\u00e4llt mir", page: 235 },
+            { english: "privacy", german: "Privatsph\u00e4re", page: 235 },
+            { english: "private", german: "privat", page: 235 },
+            { english: "safe", german: "sicher", page: 235 },
+            { english: "cyberbullying", german: "Cybermobbing", page: 235 },
+            { english: "stranger", german: "Fremde/r", page: 235 },
+            { english: "to block", german: "blockieren, sperren", page: 235 },
+            { english: "to report", german: "melden", page: 235 }
+          ]
+        },
+        {
+          id: "unit5-skills",
+          title: "Skills \u2013 How to Write an Email",
+          pages: [236],
+          entries: [
+            { english: "formal", german: "formell", page: 236 },
+            { english: "informal", german: "informell", page: 236 },
+            { english: "greeting", german: "Gru\u00df, Begr\u00fc\u00dfung", page: 236 },
+            { english: "Dear ...", german: "Liebe/r ...", page: 236 },
+            { english: "yours", german: "Dein/e, Ihr/e", page: 236 },
+            { english: "to sign off", german: "sich verabschieden (schriftlich)", page: 236 }
+          ]
+        },
+        {
+          id: "unit5-story",
+          title: "Story \u2013 The Gift of the Magi",
+          pages: [237],
+          entries: [
+            { english: "gift", german: "Geschenk", page: 237 },
+            { english: "poor", german: "arm", page: 237 },
+            { english: "rich", german: "reich", page: 237 },
+            { english: "to sacrifice", german: "opfern", page: 237 },
+            { english: "wise", german: "weise, klug", page: 237 },
+            { english: "precious", german: "wertvoll, kostbar", page: 237 },
+            { english: "chain", german: "Kette", page: 237 },
+            { english: "comb", german: "Kamm", page: 237 }
+          ]
+        },
+        {
+          id: "unit5-station",
+          title: "Station 5 \u2013 Email Pen Pals",
+          pages: [235, 236],
+          entries: [
+            { english: "pen pal", german: "Brieffreund/in", page: 235 },
+            { english: "to introduce yourself", german: "sich vorstellen", page: 235 },
+            { english: "hobby", german: "Hobby", page: 236 },
+            { english: "to look forward to", german: "sich freuen auf", page: 236 },
+            { english: "regards", german: "Gr\u00fc\u00dfe", page: 236 }
+          ]
+        },
+        {
+          id: "unit5-unittask",
+          title: "Unit Task \u2013 Design an App",
+          pages: [237],
+          entries: [
+            { english: "to design", german: "entwerfen, gestalten", page: 237 },
+            { english: "app", german: "App", page: 237 },
+            { english: "feature", german: "Funktion, Merkmal", page: 237 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "focus3",
+      title: "Focus 3 \u2013 The Celts and the Romans in Britain",
+      icon: "\uD83C\uDFDB\uFE0F",
+      subsections: [
+        {
+          id: "focus3-celts",
+          title: "Celts & Romans",
+          pages: [238, 239],
+          entries: [
+            { english: "Celt", german: "Kelte", page: 238 },
+            { english: "Roman", german: "R\u00f6mer", page: 238 },
+            { english: "to invade", german: "einfallen, eindringen", page: 238 },
+            { english: "invasion", german: "Invasion, Einfall", page: 238 },
+            { english: "empire", german: "Reich, Imperium", page: 238 },
+            { english: "emperor", german: "Kaiser", page: 238 },
+            { english: "soldier", german: "Soldat", page: 238 },
+            { english: "army", german: "Armee, Heer", page: 238 },
+            { english: "weapon", german: "Waffe", page: 238 },
+            { english: "shield", german: "Schild", page: 239 },
+            { english: "sword", german: "Schwert", page: 239 },
+            { english: "fort", german: "Festung, Fort", page: 239 },
+            { english: "wall", german: "Mauer, Wall", page: 239 },
+            { english: "to build", german: "bauen", page: 239 },
+            { english: "to defeat", german: "besiegen", page: 239 },
+            { english: "battle", german: "Schlacht", page: 239 },
+            { english: "to conquer", german: "erobern", page: 239 },
+            { english: "tribe", german: "Stamm", page: 239 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "unit6",
+      title: "Unit 6 \u2013 Goodbye Greenwich",
+      icon: "\uD83C\uDF09",
+      subsections: [
+        {
+          id: "unit6-checkin",
+          title: "Check-in",
+          pages: [240],
+          entries: [
+            { english: "goodbye", german: "Auf Wiedersehen, Tsch\u00fcss", page: 240 },
+            { english: "to miss", german: "vermissen", page: 240 },
+            { english: "memory", german: "Erinnerung", page: 240 },
+            { english: "to remember", german: "sich erinnern", page: 240 },
+            { english: "to forget", german: "vergessen", page: 240 },
+            { english: "experience", german: "Erfahrung, Erlebnis", page: 240 },
+            { english: "to look back", german: "zur\u00fcckblicken", page: 240 },
+            { english: "favourite", german: "Lieblings-", page: 240 },
+            { english: "highlight", german: "H\u00f6hepunkt", page: 240 },
+            { english: "term", german: "Halbjahr, Schulhalbjahr", page: 240 },
+            { english: "to say goodbye", german: "sich verabschieden", page: 240 }
+          ]
+        },
+        {
+          id: "unit6-topic-a",
+          title: "A \u2013 Memories & Experiences",
+          pages: [241],
+          entries: [
+            { english: "diary", german: "Tagebuch", page: 241 },
+            { english: "to grow up", german: "aufwachsen", page: 241 },
+            { english: "childhood", german: "Kindheit", page: 241 },
+            { english: "to change", german: "\u00e4ndern, ver\u00e4ndern", page: 241 },
+            { english: "future", german: "Zukunft", page: 241 },
+            { english: "past", german: "Vergangenheit", page: 241 },
+            { english: "present", german: "Gegenwart", page: 241 },
+            { english: "to promise", german: "versprechen", page: 241 },
+            { english: "wish", german: "Wunsch", page: 241 },
+            { english: "dream", german: "Traum", page: 241 }
+          ]
+        },
+        {
+          id: "unit6-station",
+          title: "Station 6 \u2013 History of London",
+          pages: [242],
+          entries: [
+            { english: "century", german: "Jahrhundert", page: 242 },
+            { english: "medieval", german: "mittelalterlich", page: 242 },
+            { english: "tower", german: "Turm", page: 242 },
+            { english: "cathedral", german: "Kathedrale, Dom", page: 242 },
+            { english: "bridge", german: "Br\u00fccke", page: 242 },
+            { english: "palace", german: "Palast, Schloss", page: 242 },
+            { english: "to restore", german: "restaurieren, wiederherstellen", page: 242 },
+            { english: "landmark", german: "Wahrzeichen, Sehensw\u00fcrdigkeit", page: 242 }
+          ]
+        },
+        {
+          id: "unit6-skills",
+          title: "Skills \u2013 Giving Information",
+          pages: [243],
+          entries: [
+            { english: "leaflet", german: "Flyer, Prospekt", page: 243 },
+            { english: "guided tour", german: "F\u00fchrung", page: 243 },
+            { english: "opening hours", german: "\u00d6ffnungszeiten", page: 243 },
+            { english: "admission", german: "Eintritt", page: 243 },
+            { english: "entrance", german: "Eingang", page: 243 },
+            { english: "exit", german: "Ausgang", page: 243 }
+          ]
         }
       ]
     }
