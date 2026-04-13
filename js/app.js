@@ -57,13 +57,15 @@
   const btnRetry = $('btn-retry');
   const btnHome = $('btn-home');
 
-  // Verb form quiz elements
+  // Verb table elements
   const answerAreaSingle = $('answer-area-single');
-  const answerAreaVerb = $('answer-area-verb');
-  const verbInput1 = $('verb-input-1');
-  const verbInput2 = $('verb-input-2');
-  const verbLabel1 = $('verb-label-1');
-  const verbLabel2 = $('verb-label-2');
+  const verbTable = $('verb-table');
+  const vtInfDisplay = $('vt-inf-display');
+  const vtSpDisplay = $('vt-sp-display');
+  const vtPpDisplay = $('vt-pp-display');
+  const vtInfInput = $('vt-inf-input');
+  const vtSpInput = $('vt-sp-input');
+  const vtPpInput = $('vt-pp-input');
   const btnCheckVerb = $('btn-check-verb');
 
   // Encouraging messages
@@ -208,18 +210,24 @@
         else checkAnswer();
       }
     });
-    verbInput1.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        if (answered) nextQuestion();
-        else if (verbInput1.value.trim() && !verbInput2.value.trim()) verbInput2.focus();
-        else checkAnswer();
-      }
-    });
-    verbInput2.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        if (answered) nextQuestion();
-        else checkAnswer();
-      }
+
+    // Verb table: Enter moves to next empty field or checks
+    [vtInfInput, vtSpInput, vtPpInput].forEach(function (inp) {
+      inp.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          if (answered) { nextQuestion(); return; }
+          // Find next empty visible input
+          var inputs = [vtInfInput, vtSpInput, vtPpInput].filter(
+            function (i) { return !i.classList.contains('hidden-field'); }
+          );
+          var filled = inputs.every(function (i) { return i.value.trim(); });
+          if (!filled) {
+            var next = inputs.find(function (i) { return !i.value.trim() && i !== inp; });
+            if (next) { next.focus(); return; }
+          }
+          checkAnswer();
+        }
+      });
     });
   }
 
@@ -272,10 +280,26 @@
     if (count === 0) {
       vocabCount.textContent = 'Select topics above to start!';
       btnStart.disabled = true;
+    } else if (isOnlyIrregularVerbs()) {
+      vocabCount.textContent = count + ' irregular verbs \u2014 Verb Forms mode';
+      btnStart.disabled = false;
     } else {
       vocabCount.textContent = count + ' words ready to practice';
       btnStart.disabled = false;
     }
+  }
+
+  // Check if only irregular verb subsections are selected
+  function isOnlyIrregularVerbs() {
+    var allSelected = [];
+    VOCABULARY_DATA.sections.forEach(function (s) {
+      s.subsections.forEach(function (sub) {
+        if (selectedSubsections.has(sub.id)) allSelected.push(sub.id);
+      });
+    });
+    return allSelected.length > 0 && allSelected.every(function (id) {
+      return id.startsWith('irregular-verbs');
+    });
   }
 
   // ===== QUIZ LOGIC =====
@@ -283,7 +307,8 @@
     filteredEntries = getFilteredEntries();
     if (filteredEntries.length === 0) return;
 
-    const mode = quizModeSelect.value;
+    // Auto-switch to verb-forms when only irregular verbs selected
+    var mode = isOnlyIrregularVerbs() ? 'verb-forms' : quizModeSelect.value;
     var countStr = questionCountSelect.value;
     var count = countStr === 'all' ? filteredEntries.length : parseInt(countStr);
     count = Math.min(count, filteredEntries.length);
@@ -396,48 +421,81 @@
     streakCountEl.textContent = streak;
     wrongCountEl.textContent = wrongCount;
 
-    // Direction badge
-    if (q.direction === 'en-to-de') {
-      directionBadge.innerHTML = 'EN &rarr; DE';
-      directionBadge.style.background = '#F5F3FF';
-      directionBadge.style.color = '#6C5CE7';
-    } else if (q.direction === 'de-to-en') {
-      directionBadge.innerHTML = 'DE &rarr; EN';
-      directionBadge.style.background = '#E8FFF9';
-      directionBadge.style.color = '#00B894';
-    } else {
-      directionBadge.innerHTML = 'Verb Forms';
-      directionBadge.style.background = '#FFF3E0';
-      directionBadge.style.color = '#E17055';
-    }
-
-    questionWord.textContent = q.question;
     feedback.innerHTML = '';
     btnNext.classList.add('hidden');
 
-    // --- Dual-input verb form mode ---
+    // --- Verb table mode ---
     if (q.type === 'verb-form-dual') {
-      var formNames = { 'infinitive': 'Infinitive', 'simple-past': 'Simple Past', 'past-participle': 'Past Participle' };
-      verbFormHint.textContent = 'Given: ' + formNames[q.givenForm] + ' \u2014 fill in the other two forms';
+      directionBadge.innerHTML = 'Verb Forms';
+      directionBadge.style.background = '#FFF3E0';
+      directionBadge.style.color = '#E17055';
+      questionWord.textContent = '';
+      verbFormHint.textContent = 'Fill in the missing forms';
 
-      // Show verb inputs, hide single input
       answerAreaSingle.classList.add('hidden');
-      answerAreaVerb.classList.remove('hidden');
-      verbLabel1.textContent = q.ask1Label;
-      verbLabel2.textContent = q.ask2Label;
-      verbInput1.value = '';
-      verbInput2.value = '';
-      verbInput1.className = 'answer-input';
-      verbInput2.className = 'answer-input';
-      verbInput1.disabled = false;
-      verbInput2.disabled = false;
+      verbTable.classList.remove('hidden');
       btnCheckVerb.classList.remove('hidden');
-      verbInput1.focus();
+
+      // For each row: show display OR input based on givenForm
+      // Infinitive row
+      if (q.givenForm === 'infinitive') {
+        vtInfDisplay.textContent = q.entry.english;
+        vtInfDisplay.classList.remove('hidden-field');
+        vtInfInput.classList.add('hidden-field');
+      } else {
+        vtInfDisplay.classList.add('hidden-field');
+        vtInfInput.classList.remove('hidden-field');
+        vtInfInput.value = '';
+        vtInfInput.className = 'answer-input verb-table-input';
+        vtInfInput.disabled = false;
+      }
+      // Simple Past row
+      if (q.givenForm === 'simple-past') {
+        vtSpDisplay.textContent = q.entry.simplePast;
+        vtSpDisplay.classList.remove('hidden-field');
+        vtSpInput.classList.add('hidden-field');
+      } else {
+        vtSpDisplay.classList.add('hidden-field');
+        vtSpInput.classList.remove('hidden-field');
+        vtSpInput.value = '';
+        vtSpInput.className = 'answer-input verb-table-input';
+        vtSpInput.disabled = false;
+      }
+      // Past Participle row
+      if (q.givenForm === 'past-participle') {
+        vtPpDisplay.textContent = q.entry.pastParticiple;
+        vtPpDisplay.classList.remove('hidden-field');
+        vtPpInput.classList.add('hidden-field');
+      } else {
+        vtPpDisplay.classList.add('hidden-field');
+        vtPpInput.classList.remove('hidden-field');
+        vtPpInput.value = '';
+        vtPpInput.className = 'answer-input verb-table-input';
+        vtPpInput.disabled = false;
+      }
+
+      // Focus first visible input
+      var firstInput = [vtInfInput, vtSpInput, vtPpInput].find(
+        function (i) { return !i.classList.contains('hidden-field'); }
+      );
+      if (firstInput) firstInput.focus();
+
     } else {
-      // --- Standard single-input mode ---
+      // --- Standard translation mode ---
+      if (q.direction === 'en-to-de') {
+        directionBadge.innerHTML = 'EN &rarr; DE';
+        directionBadge.style.background = '#F5F3FF';
+        directionBadge.style.color = '#6C5CE7';
+      } else {
+        directionBadge.innerHTML = 'DE &rarr; EN';
+        directionBadge.style.background = '#E8FFF9';
+        directionBadge.style.color = '#00B894';
+      }
+      questionWord.textContent = q.question;
       verbFormHint.textContent = '';
+
       answerAreaSingle.classList.remove('hidden');
-      answerAreaVerb.classList.add('hidden');
+      verbTable.classList.add('hidden');
       answerInput.value = '';
       answerInput.className = 'answer-input';
       answerInput.disabled = false;
@@ -450,52 +508,57 @@
     if (answered) return;
     var q = quizQuestions[currentIndex];
 
-    // --- Dual verb form check ---
+    // --- Verb table check ---
     if (q.type === 'verb-form-dual') {
-      var ans1 = verbInput1.value.trim();
-      var ans2 = verbInput2.value.trim();
-      if (!ans1 || !ans2) {
-        if (!ans1) verbInput1.focus();
-        else verbInput2.focus();
-        return;
+      // Collect answers from visible inputs
+      var checks = []; // { input, answers, label }
+      if (!vtInfInput.classList.contains('hidden-field')) {
+        if (!vtInfInput.value.trim()) { vtInfInput.focus(); return; }
+        checks.push({ input: vtInfInput, answers: splitAlternatives(q.entry.english), label: 'Infinitive' });
+      }
+      if (!vtSpInput.classList.contains('hidden-field')) {
+        if (!vtSpInput.value.trim()) { vtSpInput.focus(); return; }
+        checks.push({ input: vtSpInput, answers: splitAlternatives(q.entry.simplePast), label: 'Simple Past' });
+      }
+      if (!vtPpInput.classList.contains('hidden-field')) {
+        if (!vtPpInput.value.trim()) { vtPpInput.focus(); return; }
+        checks.push({ input: vtPpInput, answers: splitAlternatives(q.entry.pastParticiple), label: 'Past Participle' });
       }
 
       answered = true;
-      verbInput1.disabled = true;
-      verbInput2.disabled = true;
       btnCheckVerb.classList.add('hidden');
       btnNext.classList.remove('hidden');
 
-      var res1 = evaluateAnswer(ans1, q.ask1Answers, false);
-      var res2 = evaluateAnswer(ans2, q.ask2Answers, false);
+      var allCorrect = true;
+      var wrongParts = [];
 
-      var ok1 = (res1 === 'correct');
-      var ok2 = (res2 === 'correct');
+      checks.forEach(function (c) {
+        var res = evaluateAnswer(c.input.value.trim(), c.answers, false);
+        var ok = (res === 'correct');
+        c.input.disabled = true;
+        c.input.className = 'answer-input verb-table-input ' + (ok ? 'correct' : 'wrong');
+        if (!ok) {
+          allCorrect = false;
+          wrongParts.push(c.label + ': <strong>' + c.answers[0] + '</strong>');
+        }
+      });
 
-      verbInput1.className = 'answer-input ' + (ok1 ? 'correct' : 'wrong');
-      verbInput2.className = 'answer-input ' + (ok2 ? 'correct' : 'wrong');
-
-      if (ok1 && ok2) {
+      if (allCorrect) {
         handleCorrect(q);
       } else {
         wrongCount++;
         streak = 0;
         quizCard.classList.add('shake');
         setTimeout(function () { quizCard.classList.remove('shake'); }, 400);
-
-        var parts = [];
-        if (!ok1) parts.push(q.ask1Label + ': <strong>' + q.ask1Answers[0] + '</strong>');
-        if (!ok2) parts.push(q.ask2Label + ': <strong>' + q.ask2Answers[0] + '</strong>');
         feedback.innerHTML =
           '<div class="feedback-wrong">' + randomItem(WRONG_MESSAGES) + '</div>' +
-          '<div class="feedback-answer">Correct: ' + parts.join(' | ') + '</div>';
-
+          '<div class="feedback-answer">Correct: ' + wrongParts.join(' | ') + '</div>';
         mistakes.push({
-          question: q.question,
-          direction: q.direction,
+          question: q.question || q.entry.english,
+          direction: 'verb-form',
           formType: q.givenForm,
-          userAnswer: ans1 + ' / ' + ans2,
-          correctAnswer: q.ask1Answers[0] + ' / ' + q.ask2Answers[0]
+          userAnswer: checks.map(function (c) { return c.input.value.trim(); }).join(' / '),
+          correctAnswer: checks.map(function (c) { return c.answers[0]; }).join(' / ')
         });
       }
 
@@ -507,10 +570,7 @@
 
     // --- Standard single-input check ---
     var userAnswer = answerInput.value.trim();
-    if (!userAnswer) {
-      answerInput.focus();
-      return;
-    }
+    if (!userAnswer) { answerInput.focus(); return; }
 
     answered = true;
     answerInput.disabled = true;
@@ -519,13 +579,9 @@
 
     var result = evaluateAnswer(userAnswer, q.correctAnswers, q.isGermanAnswer);
 
-    if (result === 'correct') {
-      handleCorrect(q);
-    } else if (result === 'close') {
-      handleClose(q, userAnswer);
-    } else {
-      handleWrong(q, userAnswer);
-    }
+    if (result === 'correct') handleCorrect(q);
+    else if (result === 'close') handleClose(q, userAnswer);
+    else handleWrong(q, userAnswer);
 
     correctCountEl.textContent = correctCount;
     streakCountEl.textContent = streak;

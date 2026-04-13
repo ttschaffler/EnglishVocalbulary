@@ -98,26 +98,38 @@
       <div class="question-word" id="question-word">hello</div>
       <div class="verb-form-hint" id="verb-form-hint"></div>
 
+      <!-- Standard single-input for translation questions -->
       <div class="answer-area" id="answer-area-single">
         <input type="text" id="answer-input" class="answer-input"
                placeholder="Type your answer..." autocomplete="off" spellcheck="false">
         <button class="btn btn-check" id="btn-check">Check</button>
       </div>
 
-      <!-- Two-field answer area for irregular verb forms -->
-      <div class="answer-area-verb hidden" id="answer-area-verb">
-        <div class="verb-field">
-          <label class="verb-label" id="verb-label-1">Simple Past</label>
-          <input type="text" id="verb-input-1" class="answer-input"
+      <!-- Verb table layout for irregular verb forms -->
+      <div class="verb-table hidden" id="verb-table">
+        <div class="verb-row">
+          <span class="verb-row-label">Infinitive</span>
+          <div class="verb-row-value" id="vt-inf-display"></div>
+          <input type="text" class="answer-input verb-table-input" id="vt-inf-input"
                  placeholder="..." autocomplete="off" spellcheck="false">
         </div>
-        <div class="verb-field">
-          <label class="verb-label" id="verb-label-2">Past Participle</label>
-          <input type="text" id="verb-input-2" class="answer-input"
+        <div class="verb-row">
+          <span class="verb-row-label">Simple Past</span>
+          <div class="verb-row-value" id="vt-sp-display"></div>
+          <input type="text" class="answer-input verb-table-input" id="vt-sp-input"
+                 placeholder="..." autocomplete="off" spellcheck="false">
+        </div>
+        <div class="verb-row">
+          <span class="verb-row-label">Past Participle</span>
+          <div class="verb-row-value" id="vt-pp-display"></div>
+          <input type="text" class="answer-input verb-table-input" id="vt-pp-input"
                  placeholder="..." autocomplete="off" spellcheck="false">
         </div>
         <button class="btn btn-check" id="btn-check-verb">Check</button>
       </div>
+
+      <!-- Two-field answer area (legacy, hidden) -->
+      <div class="answer-area-verb hidden" id="answer-area-verb"></div>
 
       <div class="feedback" id="feedback"></div>
       <button class="btn btn-next hidden" id="btn-next">Next &rarr;</button>
