@@ -383,6 +383,51 @@ body {
   background: #F5F3FF;
 }
 
+/* Verb form two-field answer area */
+.answer-area-verb {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.verb-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.verb-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-light);
+  min-width: 110px;
+  text-align: right;
+}
+
+.answer-area-verb .btn-check {
+  align-self: flex-end;
+  margin-top: 4px;
+}
+
+.verb-given-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #E8E8F0;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+@media (max-width: 480px) {
+  .verb-label {
+    min-width: 80px;
+    font-size: 0.75rem;
+  }
+}
+
 /* ===== QUIZ SCREEN ===== */
 .quiz-header {
   margin-bottom: 20px;
