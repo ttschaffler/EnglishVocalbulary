@@ -57,6 +57,15 @@
   const btnRetry = $('btn-retry');
   const btnHome = $('btn-home');
 
+  // Verb form quiz elements
+  const answerAreaSingle = $('answer-area-single');
+  const answerAreaVerb = $('answer-area-verb');
+  const verbInput1 = $('verb-input-1');
+  const verbInput2 = $('verb-input-2');
+  const verbLabel1 = $('verb-label-1');
+  const verbLabel2 = $('verb-label-2');
+  const btnCheckVerb = $('btn-check-verb');
+
   // Encouraging messages
   const CORRECT_MESSAGES = [
     "Awesome!", "Nailed it!", "Perfect!", "You rock!",
@@ -191,14 +200,25 @@
     btnNext.addEventListener('click', nextQuestion);
     btnRetry.addEventListener('click', retryQuiz);
     btnHome.addEventListener('click', goHome);
+    btnCheckVerb.addEventListener('click', checkAnswer);
 
     answerInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        if (answered) {
-          nextQuestion();
-        } else {
-          checkAnswer();
-        }
+        if (answered) nextQuestion();
+        else checkAnswer();
+      }
+    });
+    verbInput1.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (answered) nextQuestion();
+        else if (verbInput1.value.trim() && !verbInput2.value.trim()) verbInput2.focus();
+        else checkAnswer();
+      }
+    });
+    verbInput2.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (answered) nextQuestion();
+        else checkAnswer();
       }
     });
   }
@@ -287,22 +307,48 @@
   }
 
   function buildQuestion(entry, mode) {
+    // --- Verb forms mode: show one form, ask for the other two ---
     if (mode === 'verb-forms' && entry.simplePast) {
-      var formTypes = ['simple-past', 'past-participle'];
-      var formType = formTypes[Math.floor(Math.random() * formTypes.length)];
+      // Randomly pick which form to SHOW: infinitive, simple past, or past participle
+      var givenForms = ['infinitive', 'simple-past', 'past-participle'];
+      var givenForm = givenForms[Math.floor(Math.random() * givenForms.length)];
+
+      var givenWord, ask1Label, ask1Answers, ask2Label, ask2Answers;
+      if (givenForm === 'infinitive') {
+        givenWord = entry.english;
+        ask1Label = 'Simple Past';
+        ask1Answers = splitAlternatives(entry.simplePast);
+        ask2Label = 'Past Participle';
+        ask2Answers = splitAlternatives(entry.pastParticiple);
+      } else if (givenForm === 'simple-past') {
+        givenWord = entry.simplePast.split('/')[0].trim();
+        ask1Label = 'Infinitive';
+        ask1Answers = splitAlternatives(entry.english);
+        ask2Label = 'Past Participle';
+        ask2Answers = splitAlternatives(entry.pastParticiple);
+      } else {
+        givenWord = entry.pastParticiple.split('/')[0].trim();
+        ask1Label = 'Infinitive';
+        ask1Answers = splitAlternatives(entry.english);
+        ask2Label = 'Simple Past';
+        ask2Answers = splitAlternatives(entry.simplePast);
+      }
+
       return {
         entry: entry,
-        type: 'verb-form',
-        formType: formType,
-        question: entry.english,
-        correctAnswers: formType === 'simple-past'
-          ? splitAlternatives(entry.simplePast)
-          : splitAlternatives(entry.pastParticiple),
+        type: 'verb-form-dual',
+        givenForm: givenForm,
+        question: givenWord,
+        ask1Label: ask1Label,
+        ask1Answers: ask1Answers,
+        ask2Label: ask2Label,
+        ask2Answers: ask2Answers,
         direction: 'verb-form',
         isGermanAnswer: false
       };
     }
 
+    // --- Mix mode: include verb forms for irregular verbs ---
     var direction;
     if (mode === 'en-to-de') {
       direction = 'en-to-de';
@@ -310,19 +356,7 @@
       direction = 'de-to-en';
     } else {
       if (entry.simplePast && Math.random() < 0.3) {
-        var formTypes2 = ['simple-past', 'past-participle'];
-        var ft = formTypes2[Math.floor(Math.random() * formTypes2.length)];
-        return {
-          entry: entry,
-          type: 'verb-form',
-          formType: ft,
-          question: entry.english,
-          correctAnswers: ft === 'simple-past'
-            ? splitAlternatives(entry.simplePast)
-            : splitAlternatives(entry.pastParticiple),
-          direction: 'verb-form',
-          isGermanAnswer: false
-        };
+        return buildQuestion(entry, 'verb-forms');
       }
       direction = Math.random() < 0.5 ? 'en-to-de' : 'de-to-en';
     }
@@ -362,6 +396,7 @@
     streakCountEl.textContent = streak;
     wrongCountEl.textContent = wrongCount;
 
+    // Direction badge
     if (q.direction === 'en-to-de') {
       directionBadge.innerHTML = 'EN &rarr; DE';
       directionBadge.style.background = '#F5F3FF';
@@ -377,31 +412,101 @@
     }
 
     questionWord.textContent = q.question;
-
-    if (q.type === 'verb-form') {
-      verbFormHint.textContent = q.formType === 'simple-past'
-        ? 'What is the simple past?'
-        : 'What is the past participle?';
-    } else {
-      verbFormHint.textContent = '';
-    }
-
-    answerInput.value = '';
-    answerInput.className = 'answer-input';
-    answerInput.disabled = false;
     feedback.innerHTML = '';
-    btnCheck.classList.remove('hidden');
     btnNext.classList.add('hidden');
 
-    answerInput.focus();
+    // --- Dual-input verb form mode ---
+    if (q.type === 'verb-form-dual') {
+      var formNames = { 'infinitive': 'Infinitive', 'simple-past': 'Simple Past', 'past-participle': 'Past Participle' };
+      verbFormHint.textContent = 'Given: ' + formNames[q.givenForm] + ' \u2014 fill in the other two forms';
+
+      // Show verb inputs, hide single input
+      answerAreaSingle.classList.add('hidden');
+      answerAreaVerb.classList.remove('hidden');
+      verbLabel1.textContent = q.ask1Label;
+      verbLabel2.textContent = q.ask2Label;
+      verbInput1.value = '';
+      verbInput2.value = '';
+      verbInput1.className = 'answer-input';
+      verbInput2.className = 'answer-input';
+      verbInput1.disabled = false;
+      verbInput2.disabled = false;
+      btnCheckVerb.classList.remove('hidden');
+      verbInput1.focus();
+    } else {
+      // --- Standard single-input mode ---
+      verbFormHint.textContent = '';
+      answerAreaSingle.classList.remove('hidden');
+      answerAreaVerb.classList.add('hidden');
+      answerInput.value = '';
+      answerInput.className = 'answer-input';
+      answerInput.disabled = false;
+      btnCheck.classList.remove('hidden');
+      answerInput.focus();
+    }
   }
 
   function checkAnswer() {
     if (answered) return;
-
     var q = quizQuestions[currentIndex];
-    var userAnswer = answerInput.value.trim();
 
+    // --- Dual verb form check ---
+    if (q.type === 'verb-form-dual') {
+      var ans1 = verbInput1.value.trim();
+      var ans2 = verbInput2.value.trim();
+      if (!ans1 || !ans2) {
+        if (!ans1) verbInput1.focus();
+        else verbInput2.focus();
+        return;
+      }
+
+      answered = true;
+      verbInput1.disabled = true;
+      verbInput2.disabled = true;
+      btnCheckVerb.classList.add('hidden');
+      btnNext.classList.remove('hidden');
+
+      var res1 = evaluateAnswer(ans1, q.ask1Answers, false);
+      var res2 = evaluateAnswer(ans2, q.ask2Answers, false);
+
+      var ok1 = (res1 === 'correct');
+      var ok2 = (res2 === 'correct');
+
+      verbInput1.className = 'answer-input ' + (ok1 ? 'correct' : 'wrong');
+      verbInput2.className = 'answer-input ' + (ok2 ? 'correct' : 'wrong');
+
+      if (ok1 && ok2) {
+        handleCorrect(q);
+      } else {
+        wrongCount++;
+        streak = 0;
+        quizCard.classList.add('shake');
+        setTimeout(function () { quizCard.classList.remove('shake'); }, 400);
+
+        var parts = [];
+        if (!ok1) parts.push(q.ask1Label + ': <strong>' + q.ask1Answers[0] + '</strong>');
+        if (!ok2) parts.push(q.ask2Label + ': <strong>' + q.ask2Answers[0] + '</strong>');
+        feedback.innerHTML =
+          '<div class="feedback-wrong">' + randomItem(WRONG_MESSAGES) + '</div>' +
+          '<div class="feedback-answer">Correct: ' + parts.join(' | ') + '</div>';
+
+        mistakes.push({
+          question: q.question,
+          direction: q.direction,
+          formType: q.givenForm,
+          userAnswer: ans1 + ' / ' + ans2,
+          correctAnswer: q.ask1Answers[0] + ' / ' + q.ask2Answers[0]
+        });
+      }
+
+      correctCountEl.textContent = correctCount;
+      streakCountEl.textContent = streak;
+      wrongCountEl.textContent = wrongCount;
+      return;
+    }
+
+    // --- Standard single-input check ---
+    var userAnswer = answerInput.value.trim();
     if (!userAnswer) {
       answerInput.focus();
       return;
